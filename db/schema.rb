@@ -13,7 +13,8 @@
 ActiveRecord::Schema.define(version: 20200210195740) do
 
   create_table "categories", force: :cascade do |t|
-    t.string "category_name"
+    t.string  "category_name"
+    t.integer "api_id"
   end
 
   create_table "category_questions", force: :cascade do |t|

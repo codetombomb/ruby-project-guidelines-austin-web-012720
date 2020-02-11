@@ -4,8 +4,8 @@ require 'ruby2d'
 class Jeopardy
     
     def intro
-        @think_song = Music.new('Jeopardy-theme-song.mp3')
-        @think_song.play
+        # @think_song = Music.new('Jeopardy-theme-song.mp3')
+        # @think_song.play
         Views.banner_jeopardy
         Jeopardy.main
     end
@@ -17,8 +17,8 @@ class Jeopardy
             # binding.pry
             Jeopardy.select_category
         else
-            Jeopardy.login
-            # binding.pry
+            test = Jeopardy.login
+            # should be returning the @current user
             Jeopardy.select_category
         end
     end
@@ -30,7 +30,7 @@ class Jeopardy
             self.find_user
             self.enter_password
         else "Exit"
-            self.main                   
+            # break                   
         end       
     end
 
@@ -60,7 +60,9 @@ class Jeopardy
     end
 
     def self.select_category
-    
+        #category returns a list of categories to select from
+        category = CategoryQuestion.get_category_questions
+
     end
 
 

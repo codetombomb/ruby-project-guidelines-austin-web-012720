@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
         new_user.password = User.set_password
         new_user.save
         new_user
-        binding.pry
+        # binding.pry
     end
 
     def self.get_username
