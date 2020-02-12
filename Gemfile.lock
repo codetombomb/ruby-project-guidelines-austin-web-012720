@@ -16,6 +16,7 @@ GEM
     coderay (1.1.1)
     colorize (0.8.1)
     concurrent-ruby (1.0.5)
+    configurations (2.2.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equatable (0.6.1)
@@ -25,6 +26,8 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
+    japi (1.1.2)
+      configurations (~> 2.2.0)
     json (2.3.0)
     method_source (0.8.2)
     mime-types (3.3.1)
@@ -100,6 +103,7 @@ PLATFORMS
 DEPENDENCIES
   colorize
   faker
+  japi
   json
   pry
   require_all
