@@ -4,8 +4,8 @@ require 'ruby2d'
 class Jeopardy
     
     def intro
-        # @think_song = Music.new('Jeopardy-theme-song.mp3')
-        # @think_song.play
+        @think_song = Music.new('Jeopardy-theme-song.mp3')
+        @think_song.play
         Views.banner_jeopardy
         Jeopardy.main
     end
@@ -14,7 +14,6 @@ class Jeopardy
         yes_or_no = PROMPT.yes?("Welcome to Jeopardy! Are you a new user?")
         if yes_or_no
             @@current_user = User.create_user
-            # binding.pry
             Jeopardy.select_category
         else
             test = Jeopardy.login
@@ -30,7 +29,8 @@ class Jeopardy
             self.find_user
             self.enter_password
         else "Exit"
-            # break                   
+          puts "Thank you for playing."
+          exit                  
         end       
     end
 
@@ -60,11 +60,30 @@ class Jeopardy
     end
 
     def self.select_category
-        #category returns a list of categories to select from
-        category = CategoryQuestion.get_category_questions
+        puts "\n" * 35
+        Views.select_category_banner
+        new_category_questions = Question.get_category_questions
+        random_selection = Question.all.sample(6)
+        category_strings = random_selection.map{|cat| cat.category}
+        
+        selection = PROMPT.select("Select a category", category_strings)
 
+        case selection
+        when category_strings[0]
+            puts "#{category_strings[0]}"
+        when category_strings[1]
+            puts "#{category_strings[1]}"
+        when category_strings[2]
+            puts "#{category_strings[2]}"
+        when category_strings[3]
+            puts "#{category_strings[3]}"
+        when category_strings[4]
+            puts "#{category_strings[4]}"
+        else category_strings[5]
+            puts "#{category_strings[5]}"
+        end
+        binding.pry
     end
-
 
 
 end
