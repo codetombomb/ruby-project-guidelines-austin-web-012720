@@ -311,10 +311,10 @@ class Jeopardy
 
     def self.final_jeopardy
       @@final_clue = Question.all.sample
+      
       puts "You will have 30 seconds to answer the Final Jeopardy question."
       puts "The category is #{@@final_clue.category}"  
       wager = PROMPT.ask("How much would you like to wager?", required: true).to_i
-      binding.pry
       Jeopardy.final_timer
       #the final_timer method displays the question for 30 seconds
 
@@ -343,7 +343,10 @@ class Jeopardy
         puts "\n" * 35
         Views.banner_jeopardy  
         puts "Your score is #{@@score}."
-        #screen out players whose score is < 1
+        if @@score < 1
+          puts "Sorry, you will not be able to participate in Final Jeopary since you are in the negative."  
+          Jeopardy.player_stats      
+        end
         selection = PROMPT.select("Are you ready for the Final Round?", %w(Yes Exit))
         case selection
         when "Yes"
@@ -361,14 +364,17 @@ class Jeopardy
 
         puts "Your score is #{@@score}."
         #fix code after this
-        selection = PROMPT.select("Are you ready for the Final Round?", %w(Yes Exit))
-        case selection
-        when "Yes"
-          self.final_jeopardy  
-        else "Exit"
-            Views.banner_exit
-            sleep(3)
-          exit                  
-        end         
+        # selection = PROMPT.select("Are you ready for the Final Round?", %w(Yes Exit))
+        # case selection
+        # when "Yes"
+        #   self.final_jeopardy  
+        # else "Exit"
+        #     Views.banner_exit
+        #     sleep(3)
+        #   exit                  
+        # end         
+    end
+
+    def self.player_stats
     end
 end

@@ -10,23 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200212152604) do
-
-  create_table "questions", force: :cascade do |t|
-    t.text    "question"
-    t.string  "answer"
-    t.string  "category"
-    t.integer "value"
-  end
-
-  create_table "user_questions", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "question_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password"
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end
