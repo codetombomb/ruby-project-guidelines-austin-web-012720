@@ -119,8 +119,9 @@ class Jeopardy
        
         category_strings = random_selection.map{|cat| cat.category}
         #iterate over category strings and remove all html tags
-        # RemoveTags.remove_html_tags(category_strings)
+        
         # ActionView::Base.full_sanitizer.sanitize(@string)
+        #Sanitize.clean("<b>lol</b>") #=> "lol"
 
         selection = PROMPT.select("Select a category", category_strings)
         questions = Question.all.select {|question| question.category == selection}
@@ -315,8 +316,10 @@ class Jeopardy
       puts "You will have 30 seconds to answer the Final Jeopardy question."
       puts "The category is #{@@final_clue.category}"  
       wager = PROMPT.ask("How much would you like to wager?", required: true).to_i
+
       Jeopardy.final_timer
-      #the final_timer method displays the question for 30 seconds
+      #the final_timer method displays the question for 30 seconds with the answers
+      #the @@current_user has to choose a correct answer
 
       Jeopardy.display_info_end_of_game
       final_answer = PROMPT.select("#{}")
