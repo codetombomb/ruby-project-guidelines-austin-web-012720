@@ -13,5 +13,7 @@ gem 'tty-table'
 gem "colorize"
 gem "ruby2d"
 gem "japi"
+gem "timer"
+gem 'eventmachine', '~> 1.2', '>= 1.2.7'
 
 

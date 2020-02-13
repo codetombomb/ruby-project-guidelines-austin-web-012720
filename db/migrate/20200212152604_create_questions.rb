@@ -4,6 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[5.0]
       t.text :question 
       t.string :answer
       t.string :category
+      t.integer :category_id
       t.integer :value
     end
   end

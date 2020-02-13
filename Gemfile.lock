@@ -20,6 +20,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     equatable (0.6.1)
+    eventmachine (1.2.7)
     faker (2.2.1)
       i18n (>= 0.8)
     http-accept (1.7.0)
@@ -35,6 +36,8 @@ GEM
     mime-types-data (3.2019.1009)
     minitest (5.10.1)
     mustermann (1.0.3)
+    natural_time (0.2.1)
+      activesupport
     necromancer (0.5.1)
     netrc (0.11.0)
     pastel (0.7.3)
@@ -71,6 +74,9 @@ GEM
     strings-ansi (0.2.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    timer (0.2)
+      activesupport
+      natural_time
     tty-color (0.5.1)
     tty-cursor (0.7.1)
     tty-prompt (0.20.0)
@@ -102,6 +108,7 @@ PLATFORMS
 
 DEPENDENCIES
   colorize
+  eventmachine (~> 1.2, >= 1.2.7)
   faker
   japi
   json
@@ -111,6 +118,7 @@ DEPENDENCIES
   ruby2d
   sinatra-activerecord
   sqlite3
+  timer
   tty-prompt
   tty-table
 

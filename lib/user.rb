@@ -9,7 +9,6 @@ class User < ActiveRecord::Base
         new_user.password = User.set_password
         new_user.save
         new_user
-        # binding.pry
     end
 
     def self.get_username
@@ -43,13 +42,6 @@ class User < ActiveRecord::Base
             puts "Those didn't match. Please try again!".light_red
             self.set_password
         end
-    end
-
-
-
-    # def self.login
-
-    # end
-    
+    end  
 
 end

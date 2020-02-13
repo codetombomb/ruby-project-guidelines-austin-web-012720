@@ -16,7 +16,6 @@ class Question < ActiveRecord::Base
           new_question.value = question["value"]
         end
         new_question.category = question["category"]["title"]
-        #Some of the values are nil so we need to assign an optional value
         new_question.save
       end 
     end
@@ -29,7 +28,4 @@ class Question < ActiveRecord::Base
         end
       end
     end
-
-  
-
 end

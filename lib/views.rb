@@ -49,6 +49,10 @@ class Views
         select_value = PROMPT.select("Select value", %w(100 200 600 800 1000 ))
     end
 
+    def self.select_double_jeopardy_values
+        select_value = PROMPT.select("Select value", %w(200 400 1200 1600 2000 ))
+    end
+
     def self.display_question(selected_question,question_list,clue_value)
         puts "\n" * 35
         print "Category:".light_yellow 

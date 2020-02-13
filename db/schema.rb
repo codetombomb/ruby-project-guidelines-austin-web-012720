@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20200212152604) do
     t.text    "question"
     t.string  "answer"
     t.string  "category"
+    t.integer "category_id"
     t.integer "value"
   end
 
@@ -25,8 +26,9 @@ ActiveRecord::Schema.define(version: 20200212152604) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "password"
+    t.string  "username"
+    t.string  "password"
+    t.integer "high_score", default: 0
   end
 
 end
