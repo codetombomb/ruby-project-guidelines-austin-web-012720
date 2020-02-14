@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
             puts "Those didn't match. Please try again!".light_red
             self.set_password
         end
-    end  
+    end 
+    
+    
 
 end
