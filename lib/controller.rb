@@ -356,21 +356,6 @@ class Jeopardy
     
     private
 
-    # def self.final_timer
-    #     EM.run do
-    #       EM.add_timer(30) do
-    #         puts "The time is up."
-    #         EM.stop_event_loop
-    #       end
-    #       EM.add_periodic_timer(1) do
-    #         final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}
-    #         puts "#{@@final_clue.question}"
-    #         final_answer = PROMPT.select("What is:", final_selections)
-    #       end
-    #     end
-    #     final_answer
-    # end
-
     def self.timer
         EM.run do
           EM.add_timer(10) do
@@ -414,21 +399,4 @@ class Jeopardy
           exit                  
         end    
     end
-
-    # def self.display_info_end_of_game
-    #     puts "\n" * 35
-    #     Views.banner_jeopardy
-
-    #     puts "Your score is #{@@score}."
-    #     #fix code after this
-    #     selection = PROMPT.select("Are you ready for the Final Round?", %w(Yes Exit))
-    #     case selection
-    #     when "Yes"
-    #       self.final_jeopardy  
-    #     else "Exit"
-    #         Views.banner_exit
-    #         sleep(3)
-    #       exit                  
-    #     end         
-    # end
 end
