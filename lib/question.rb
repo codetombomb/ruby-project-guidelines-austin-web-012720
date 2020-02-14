@@ -9,8 +9,7 @@ class Question < ActiveRecord::Base
 
       parsed_response.each do |question|
         new_question = self.find_or_create_by(question: question["question"])
-        re = /<("[^"]*"|'[^']*'|[^'">])*>/
-        new_question.answer = question["answer"].gsub!(re, '')
+        new_question.answer = question["answer"]
         if question["value"] == nil 
           new_question.value = 100 
         else 

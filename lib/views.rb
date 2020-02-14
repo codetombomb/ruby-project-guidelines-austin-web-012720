@@ -119,7 +119,8 @@ puts "\n" * 5
         print "Trebek:".light_green 
         puts"For #{clue_value} dollars, #{selected_question.question}"
         puts "\n" * 3
-        selections = question_list.map {|q| q.answer}.first(5)
+        re = /<("[^"]*"|'[^']*'|[^'">])*>/
+        selections = question_list.map {|q| q.answer}.first(5).each {|string| string.gsub!(re, '')}
         selections << selected_question.answer
         given_answer = PROMPT.select("What is:", selections.shuffle.uniq)
         given_answer

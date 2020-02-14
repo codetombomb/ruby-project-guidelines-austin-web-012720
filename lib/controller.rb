@@ -108,8 +108,8 @@ class Jeopardy
         # puts "\n" * 5
         # sleep(3)
         # print "Trebek:".light_green
-        # puts "On the Final Jeopardy round, you can place your wager and you will be given 30 seconds to come up with \nthe correct response."
-        # sleep(6)
+        # puts "On the Final Jeopardy round, you can place your wager and go for the high score!"
+        # sleep(3)
         # Views.banner_jeopardy
         ready = PROMPT.select("Press start to begin the Jeopardy Round", %w(Start Exit))
         if ready == "Start"
@@ -133,7 +133,8 @@ class Jeopardy
             sleep(3)
           exit     
         else "Delete_unusable_categories"
-            Question.check_category_length             
+            Question.check_category_length 
+            Jeopardy.greeting           
         end       
     end
 
@@ -286,7 +287,7 @@ class Jeopardy
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
                 study_question.save
-                binding.pry
+                # binding.pry
                 print "Trebek:".light_green
                 print " That is incorrect.".light_red
                 puts "The correct response is #{user_question.answer}. "
@@ -446,7 +447,8 @@ class Jeopardy
       Views.double_jeopardy_banner
       @@double_jeopardy = true   
       Jeopardy.timer
-      Jeopardy.check_score 
+    #   Jeopardy.check_score 
+        binding.pry
       @@double_jeopardy = false 
        if @@score <= 0 
             print "Trebek:".light_green
@@ -474,11 +476,15 @@ class Jeopardy
       Views.final_jeopardy_banner  
       @@final_clue = Question.all.sample
       puts "Your score: #{@@score}"
-      puts "You will have 30 seconds to answer the Final Jeopardy question."
+      print "Trebek:".light_green
+      puts "Think carefully about this Final Jeopardy question."
       print "The category is" 
       puts " #{@@final_clue.category}".light_cyan.bold 
       wager = Jeopardy.make_wager
-      final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}
+      re = /<("[^"]*"|'[^']*'|[^'">])*>/
+      final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}.each {|a| a.gsub!(re, '')}
+    #   binding.pry
+      
       puts "\n" * 35 
       puts "Your wager: #{wager}"
       print "Category: ".light_yellow
@@ -499,13 +505,20 @@ class Jeopardy
         @@score += wager
         # binding.pry
       else
+        puts "\n" * 3
+        print "Trebek:".light_green
+        puts "That is an incorrect response. Let's see what you'll lose..."
+        sleep(2)
+        puts "Your wager: #{wager}"
+        sleep(2)
         # binding.pry
         @@score -= wager
       end
-    #   binding.pry
-      puts "Your score is #{@@score}"
+        # binding.pry
+      puts "Your score for this game is #{@@score}"
       sleep(3)
       Jeopardy.check_score
+    #   binding.pry
       Jeopardy.player_stats
       Jeopardy.main_menu
     end
