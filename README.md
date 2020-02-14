@@ -1,10 +1,17 @@
-# Module One Final Project Guidelines
+# This Is Jeopardy
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+This is a command line prompt game that will allow the user to select a category and value and the user will choose the correct answer from a list of options.  The user can create a username and password when they start the game.  The game will keep track of the score and save their highest score to the user's account.
 
-For your final project, we'll be building a Command Line database application.
-
-## Project Requirements
+## Load and Run the game
+```
+Ruby 2.6.1
+```  
+```
+bundle install
+```
+```
+ruby bin/run.rb
+```
 
 ### Option One - Data Analytics Project
 

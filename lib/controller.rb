@@ -113,12 +113,20 @@ class Jeopardy
         end
     end
 
+    # def remove_html_tags
+    #     re = /<("[^"]*"|'[^']*'|[^'">])*>/
+    #     self.title.gsub!(re, '')
+    #   end
+
     def self.select_category
         puts "\n" * 35
         Views.select_category_banner
         random_selection = Question.all.sample(6)
         category_strings = random_selection.map{|cat| cat.category}
         #ITERATE OVER CATEGORY STRINGS AND REMOVE HTML TAGS
+        re = /<("[^"]*"|'[^']*'|[^'">])*>/
+        category_strings = category_strings.each {|string| string.gsub!(re, '')}
+
         selection = PROMPT.select("Select a category", category_strings)
         questions = Question.all.select {|question| question.category == selection}
         case selection
@@ -143,7 +151,6 @@ class Jeopardy
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
                 study_question.save
-                # binding.pry
                 print "Trebek:".light_green
                 print "That is incorrect.".light_red
                 puts "The correct response is #{user_question.answer}. "
@@ -248,7 +255,6 @@ class Jeopardy
                 print "Trebek:".light_green
                 puts "That is correct"
                 puts "Your score: #{@@score}"
-                # binding.pry
              else
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
@@ -323,8 +329,6 @@ class Jeopardy
       wager = Jeopardy.make_wager
       final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}
       puts "#{@@final_clue.question}"
-      @think_song = Music.new('Jeopardy-theme-song.mp3')
-      @think_song.play
       final_answer = PROMPT.select("What is:", final_selections)
       if final_answer == @@final_clue.answer
         puts "\n" * 35
