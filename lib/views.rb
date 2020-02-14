@@ -120,14 +120,8 @@ puts "\n" * 5
         puts"For #{clue_value} dollars, #{selected_question.question}"
         puts "\n" * 3
         selections = question_list.map {|q| q.answer}.first(5)
-        # binding.pry
         selections << selected_question.answer
-        # binding.pry
         given_answer = PROMPT.select("What is:", selections.shuffle.uniq)
         given_answer
     end
-
-
-    
-
 end

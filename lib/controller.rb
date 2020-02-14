@@ -73,7 +73,7 @@ class Jeopardy
             end 
             sleep(6)
             Jeopardy.main_menu
-        when "EditMyInfo"
+        when "Edit_My_Info"
             Jeopardy.edit_my_info
         else 
             Views.banner_exit
@@ -83,34 +83,34 @@ class Jeopardy
 
     def self.about
         Views.banner_jeopardy
-        print "Johnny Gilbert: ".light_yellow
-        puts"And now, here is the host of Jeopardy; Alex Trebek!"
-        puts "\n" * 5
-        sleep(4)
-        print "Trebek: ".light_green
-        puts "Thank you Johnny!"
-        puts "\n" * 5
-        sleep(2)
-        print "Trebek: ".light_green
-        puts "Jeopardy Lite will prepare you for your Jeopardy debut."
-        puts "\n" * 5
-        sleep(3)
-        print "Trebek: ".light_green
-        puts "You will have one minute in Jeopardy and the Double Jeopardy rounds to answer as many questions \nas you can while adding to your score."
-        puts "\n" * 5
-        sleep(6)
-        print "Trebek: ".light_green
-        puts "Each incorrect response will be saved to your account for you to study later."
-        puts "\n" * 5
-        sleep(4)
-        print "Trebek: ".light_green
-        puts "You will also be penalized 3 seconds for each incorrect response."
-        puts "\n" * 5
-        sleep(3)
-        print "Trebek:".light_green
-        puts "On the Final Jeopardy round, you can place your wager and you will be given 30 seconds to come up with \nthe correct response."
-        sleep(6)
-        Views.banner_jeopardy
+        # print "Johnny Gilbert: ".light_yellow
+        # puts"And now, here is the host of Jeopardy; Alex Trebek!"
+        # puts "\n" * 5
+        # sleep(4)
+        # print "Trebek: ".light_green
+        # puts "Thank you Johnny!"
+        # puts "\n" * 5
+        # sleep(2)
+        # print "Trebek: ".light_green
+        # puts "Jeopardy Lite will prepare you for your Jeopardy debut."
+        # puts "\n" * 5
+        # sleep(3)
+        # print "Trebek: ".light_green
+        # puts "You will have one minute in Jeopardy and the Double Jeopardy rounds to answer as many questions \nas you can while adding to your score."
+        # puts "\n" * 5
+        # sleep(6)
+        # print "Trebek: ".light_green
+        # puts "Each incorrect response will be saved to your account for you to study later."
+        # puts "\n" * 5
+        # sleep(4)
+        # print "Trebek: ".light_green
+        # puts "You will also be penalized 3 seconds for each incorrect response."
+        # puts "\n" * 5
+        # sleep(3)
+        # print "Trebek:".light_green
+        # puts "On the Final Jeopardy round, you can place your wager and you will be given 30 seconds to come up with \nthe correct response."
+        # sleep(6)
+        # Views.banner_jeopardy
         ready = PROMPT.select("Press start to begin the Jeopardy Round", %w(Start Exit))
         if ready == "Start"
             puts "\n" * 35
@@ -286,6 +286,7 @@ class Jeopardy
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
                 study_question.save
+                binding.pry
                 print "Trebek:".light_green
                 print " That is incorrect.".light_red
                 puts "The correct response is #{user_question.answer}. "
@@ -448,6 +449,9 @@ class Jeopardy
       Jeopardy.check_score 
       @@double_jeopardy = false 
        if @@score <= 0 
+            print "Trebek:".light_green
+            puts "I'm sorry, your score does not qualify to advance to Final Jeopardy."
+            sleep(5)
             Jeopardy.player_stats
             Jeopardy.main_menu
        end
@@ -493,7 +497,7 @@ class Jeopardy
         sleep(2)
         # binding.pry
         @@score += wager
-        binding.pry
+        # binding.pry
       else
         # binding.pry
         @@score -= wager
