@@ -25,3 +25,5 @@ ruby bin/run.rb
 
   This game was created for our first project at the Flatiron School (Austin) location.
 
+## Here is a video demo 
+https://youtu.be/YuLM-0J_7k8
