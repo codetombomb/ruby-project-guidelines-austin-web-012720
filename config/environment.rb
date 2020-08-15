@@ -7,6 +7,5 @@ require_all 'lib'
 
 
 PROMPT = TTY::Prompt.new
-# CLUE = JAPI::Trebek.new
 old_logger = ActiveRecord::Base.logger
 ActiveRecord::Base.logger = nil
