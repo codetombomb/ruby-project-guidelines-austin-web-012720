@@ -1,4 +1,4 @@
-require "pry"
+# require "pry"
 require "ruby2d"
 require "eventmachine"
 
@@ -40,21 +40,42 @@ class Jeopardy
     else
       puts " No score recorded"
     end
-    puts "\n"
-    # print "Trebek:".light_green 
-    print "Welcome to Jeopardy Lite" 
-    puts " #{@@current_user.username}!".light_yellow.bold
-    puts "\n" 
-    selection = PROMPT.select("Please make a selection",%w(Play Study Top_Three Edit_My_Info Exit))
-    case selection
-      when "Play"
-        Jeopardy.about
-      when "Study"
-        study_or_delete = PROMPT.select("", %w(Study Delete_All_Study_Questions))
-        if study_or_delete == "Study"
-          puts "\n" * 20
-          Views.banner_jeopardy
-          UserQuestion.study(@@current_user) 
+
+    def self.about
+        Views.banner_jeopardy
+        print "Johnny Gilbert: ".light_yellow
+        puts"And now, here is the host of Jeopardy; Alex Trebek!"
+        puts "\n" * 5
+        sleep(4)
+        print "Trebek: ".light_green
+        puts "Thank you Johnny!"
+        puts "\n" * 5
+        sleep(2)
+        print "Trebek: ".light_green
+        puts "Jeopardy Lite will prepare you for your Jeopardy debut."
+        puts "\n" * 5
+        sleep(3)
+        print "Trebek: ".light_green
+        puts "You will have one minute in Jeopardy and the Double Jeopardy rounds to answer as many questions \nas you can while adding to your score."
+        puts "\n" * 5
+        sleep(6)
+        print "Trebek: ".light_green
+        puts "Each incorrect response will be saved to your account for you to study later."
+        puts "\n" * 5
+        sleep(4)
+        print "Trebek: ".light_green
+        puts "You will also be penalized 3 seconds for each incorrect response."
+        puts "\n" * 5
+        sleep(3)
+        print "Trebek:".light_green
+        puts "On the Final Jeopardy round, you can place your wager and go for the high score!"
+        sleep(3)
+        Views.banner_jeopardy
+        ready = PROMPT.select("Press start to begin the Jeopardy Round", %w(Start Exit))
+        if ready == "Start"
+            puts "\n" * 35
+            Views.jeopardy_round_banner
+            Jeopardy.jeopardy_round 
         else
           are_you_sure = PROMPT.yes?('Are you sure you want to delete all?') do |q|
             q.suffix 'Y/N'
@@ -131,6 +152,29 @@ class Jeopardy
     end
   end
 
+    def self.change_password
+        old_password = PROMPT.mask("Please enter your old password".light_yellow, required: true)
+        if old_password == @@current_user.password
+            new_password = PROMPT.mask("Please enter your new password".light_cyan, required: true) do |q|
+            q.validate(/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/)
+            q.messages[:valid?] = 'Your passowrd must be at least 6 characters and include one number and one letter'
+          end        
+            confirm_password = PROMPT.mask("Please confirm your new password".light_green, required: true)
+            if new_password == confirm_password
+                puts "\n" * 35
+                @@current_user.password = nil
+                @@current_user.password = new_password
+            else
+                puts "\n" * 35
+                puts "Those didn't match. Please try again!".light_red
+                self.change_password
+            end
+        else
+            puts "That was not right.".light_red
+            puts "Please try again"
+            self.change_password
+        end 
+    end
 
 
   def self.login
@@ -189,10 +233,22 @@ class Jeopardy
     end
   end
 
-  def self.change_username
-    given_username = PROMPT.ask("Alright #{@@current_user.username.light_green}, what do you want your new User Name to be?", required: true)
-    confirm_username = PROMPT.yes?("#{given_username.light_green.bold} is what you entered. Are you sure?") do |q|
-      q.suffix 'Y/N'
+    def self.double_jeopardy
+      puts "\n" * 20
+      Views.double_jeopardy_banner
+      @@double_jeopardy = true   
+      Jeopardy.timer
+    #   Jeopardy.check_score 
+        # binding.pry
+      @@double_jeopardy = false 
+       if @@score <= 0 
+            print "Trebek:".light_green
+            puts "I'm sorry, your score does not qualify to advance to Final Jeopardy."
+            sleep(5)
+            Jeopardy.player_stats
+            Jeopardy.main_menu
+       end
+      Jeopardy.display_info_final_jeopardy
     end
     if confirm_username
       if User.find_by(username: given_username) == nil 
@@ -557,20 +613,24 @@ class Jeopardy
       @@current_user.high_score = @@score
       @@current_user.save
     end
-  end
+
+    private
 
   private
 
-  def self.timer
-    EM.run do
-      EM.add_timer(60) do
-        puts "The time is up."
-        sleep(2)
-        EM.stop_event_loop
-      end
-      EM.add_periodic_timer(1) do
-        Jeopardy.select_category
-      end
+
+
+    def self.display_info
+      puts "\n" * 35
+      Views.banner_jeopardy  
+      puts "Your score is #{@@score}."
+      selection = PROMPT.select("The points values will now be worth double. Are you ready for Double Jeopardy?", %w(Yes Exit))
+      case selection
+      when "Yes"
+        self.double_jeopardy  
+      else "Exit"
+          Jeopardy.main_menu                 
+      end      
     end
   
   end
