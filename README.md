@@ -16,15 +16,15 @@ bundle install
 ```
 ruby bin/run.rb
 ```
-### API Source
+# API Source
 We used the wonderful JService API to seed our database
-# Website
+## Website
 http://jservice.io/
-# GitHub
+## GitHub
 https://github.com/sottenad/jService
 
 
-### Contributers
+## Contributers
 
   * Tom Tobar
   * Maylene Poulsen
