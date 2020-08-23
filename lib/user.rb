@@ -43,6 +43,14 @@ class User < ActiveRecord::Base
             self.set_password
         end
     end 
+
+    def self.check_user_highscore(user)
+        if user.high_score > 0
+            puts " #{user.high_score}"
+        else
+            puts " No score recorded"
+        end
+    end
     
     
 

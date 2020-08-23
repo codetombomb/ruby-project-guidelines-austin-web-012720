@@ -8,7 +8,7 @@ class Jeopardy
 
     def intro
         Views.banner_jeopardy
-        Jeopardy.greeting
+        self.greeting
     end
 
     def self.greeting
@@ -16,69 +16,76 @@ class Jeopardy
         puts "\n" * 35
         if yes_or_no
             @@current_user = User.create_user
-            Jeopardy.main_menu
+            self.main_menu
         else
-            Jeopardy.login
-            Jeopardy.main_menu
+            self.login
+            self.main_menu
         end
     end
 
+    
     def self.main_menu
         puts "\n" * 35
-        Views.banner_jeopardy
-        puts "\n".chomp * 3
+        Views.banner_jeopardy        
         print "My high score:".light_cyan
-        if @@current_user.high_score > 0
-            puts " #{@@current_user.high_score}"
-        else
-            puts " No score recorded"
-        end
+        User.check_user_highscore(@@current_user)
         puts "\n"
-        # print "Trebek:".light_green 
         print "Welcome to Jeopardy Lite" 
         puts " #{@@current_user.username}!".light_yellow.bold
         puts "\n" 
+        self.make_a_selection
+    end
+
+    def self.make_a_selection
         selection = PROMPT.select("Please make a selection",%w(Play Study Top_Three Edit_My_Info Exit))
         case selection
         when "Play"
-            Jeopardy.about
+            self.about
         when "Study"
-            study_or_delete = PROMPT.select("", %w(Study Delete_All_Study_Questions))
-            if study_or_delete == "Study"
-                puts "\n" * 20
-                Views.banner_jeopardy
-                UserQuestion.study(@@current_user) 
-            else
-                are_you_sure = PROMPT.yes?('Are you sure you want to delete all?') do |q|
-                    q.suffix 'Y/N'
-                        end
-                    if are_you_sure
-                        @@current_user.questions.delete_all
-                        Jeopardy.main_menu
-                    else
-                        Jeopardy.main_menu
-                    end  
-            end        
+            self.study
         when "Top_Three"
-            puts "\n" * 35
-            highest_scores = User.order(high_score: :desc).first(3)
-            Views.top_three
-            highest_scores.each do |user|
-                puts "*" * 36
-                print "Username: ".light_yellow
-                puts user.username
-                print "Score:"
-                puts user.high_score
-                puts "*" * 36
-            end 
-            sleep(6)
-            Jeopardy.main_menu
+            self.get_top_three
         when "Edit_My_Info"
-            Jeopardy.edit_my_info
+            self.edit_my_info
         else 
             Views.banner_exit
             exit
         end
+    end
+
+    def self.study
+        study_or_delete = PROMPT.select("", %w(Study Delete_All_Study_Questions))
+        if study_or_delete == "Study"
+            puts "\n" * 20
+            Views.banner_jeopardy
+            UserQuestion.study(@@current_user) 
+        else
+            are_you_sure = PROMPT.yes?('Are you sure you want to delete all?') do |q|
+                q.suffix 'Y/N'
+            end
+            if are_you_sure
+                @@current_user.questions.delete_all
+                self.main_menu
+            else
+                self.main_menu
+            end  
+         end     
+    end
+
+    def self.get_top_three
+        puts "\n" * 35
+        highest_scores = User.order(high_score: :desc).first(3)
+        Views.top_three
+        highest_scores.each do |user|
+            puts "*" * 36
+            print "Username: ".light_yellow
+            puts user.username
+            print "Score:"
+            puts user.high_score
+            puts "*" * 36
+        end 
+        sleep(6)
+        self.main_menu
     end
 
     def self.about
@@ -115,9 +122,9 @@ class Jeopardy
         if ready == "Start"
             puts "\n" * 35
             Views.jeopardy_round_banner
-            Jeopardy.jeopardy_round 
+            self.jeopardy_round 
         else
-            Jeopardy.main_menu
+            self.main_menu
         end
     end
 
@@ -134,7 +141,7 @@ class Jeopardy
           exit     
         else "Delete_unusable_categories"
             Question.check_category_length 
-            Jeopardy.greeting           
+            self.greeting           
         end       
     end
 
@@ -167,13 +174,13 @@ class Jeopardy
         case pick_an_edit
            when "Username"
                 self.change_username
-                Jeopardy.main_menu
+                self.main_menu
            when "Password"
                 self.change_password
                 puts "Your password was successfully changed"
-                Jeopardy.main_menu
+                self.main_menu
            else "Back"
-            Jeopardy.main_menu
+            self.main_menu
         end
     end
 
@@ -437,8 +444,8 @@ class Jeopardy
     end
 
     def self.jeopardy_round
-      Jeopardy.timer
-      Jeopardy.display_info
+      self.timer
+      self.display_info
     end
 
 
@@ -446,7 +453,7 @@ class Jeopardy
       puts "\n" * 20
       Views.double_jeopardy_banner
       @@double_jeopardy = true   
-      Jeopardy.timer
+      self.timer
     #   Jeopardy.check_score 
         # binding.pry
       @@double_jeopardy = false 
@@ -454,10 +461,10 @@ class Jeopardy
             print "Trebek:".light_green
             puts "I'm sorry, your score does not qualify to advance to Final Jeopardy."
             sleep(5)
-            Jeopardy.player_stats
-            Jeopardy.main_menu
+            self.player_stats
+            self.main_menu
        end
-      Jeopardy.display_info_final_jeopardy
+      self.display_info_final_jeopardy
     end
 
     def self.make_wager
@@ -467,7 +474,7 @@ class Jeopardy
         else
             puts "\n" * 3
             puts "Wager must not be greater than #{@@score} or less than 0.".light_yellow
-            Jeopardy.make_wager
+            self.make_wager
         end
     end
 
@@ -480,7 +487,7 @@ class Jeopardy
       puts "Think carefully about this Final Jeopardy question."
       print "The category is" 
       puts " #{@@final_clue.category}".light_cyan.bold 
-      wager = Jeopardy.make_wager
+      wager = self.make_wager
       re = /<("[^"]*"|'[^']*'|[^'">])*>/
       final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}.each {|a| a.gsub!(re, '')}
     #   binding.pry
@@ -517,10 +524,10 @@ class Jeopardy
         # binding.pry
       puts "Your score for this game is #{@@score}"
       sleep(3)
-      Jeopardy.check_score
+      self.check_score
     #   binding.pry
-      Jeopardy.player_stats
-      Jeopardy.main_menu
+      self.player_stats
+      self.main_menu
     end
 
     def self.player_stats
@@ -549,7 +556,7 @@ class Jeopardy
           end
         
           EM.add_periodic_timer(1) do
-            Jeopardy.select_category
+            self.select_category
           end
         end
     
@@ -566,7 +573,7 @@ class Jeopardy
       when "Yes"
         self.double_jeopardy  
       else "Exit"
-          Jeopardy.main_menu                 
+          self.main_menu                 
       end      
     end
 
@@ -579,7 +586,7 @@ class Jeopardy
              when "Start"
              self.final_jeopardy  
             else "Exit"
-            Jeopardy.main_menu               
+            self.main_menu               
         end    
     end
 end
