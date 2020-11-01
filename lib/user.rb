@@ -51,7 +51,4 @@ class User < ActiveRecord::Base
             puts " No score recorded"
         end
     end
-    
-    
-
 end

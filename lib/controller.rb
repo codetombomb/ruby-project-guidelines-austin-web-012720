@@ -8,7 +8,7 @@ class Jeopardy
 
     def intro
         Views.banner_jeopardy
-        self.greeting
+        Jeopardy.greeting
     end
 
     def self.greeting
@@ -230,7 +230,6 @@ class Jeopardy
     def self.select_category
         random_selection = Question.all.sample(6)
         category_strings = random_selection.map{|cat| cat.category}
-        #ITERATE OVER CATEGORY STRINGS AND REMOVE HTML TAGS
         selection = PROMPT.select("Select a category".light_yellow, category_strings)
         questions = Question.all.select {|question| question.category == selection}
         case selection
@@ -258,7 +257,6 @@ class Jeopardy
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
                 study_question.save
-                # binding.pry
                 print "Trebek:".light_green
                 print " That is incorrect.".light_red
                 puts "The correct response is #{user_question.answer}. "
@@ -294,7 +292,6 @@ class Jeopardy
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
                 study_question.save
-                # binding.pry
                 print "Trebek:".light_green
                 print " That is incorrect.".light_red
                 puts "The correct response is #{user_question.answer}. "
@@ -392,7 +389,6 @@ class Jeopardy
                 sleep(1)
                 puts "\n" * 35
                 puts "Your score: #{@@score}"
-                # binding.pry
              else
                 @@score -= value 
                 study_question = UserQuestion.new(user: @@current_user, question: user_question)
@@ -454,8 +450,6 @@ class Jeopardy
       Views.double_jeopardy_banner
       @@double_jeopardy = true   
       self.timer
-    #   Jeopardy.check_score 
-        # binding.pry
       @@double_jeopardy = false 
        if @@score <= 0 
             print "Trebek:".light_green
@@ -490,7 +484,6 @@ class Jeopardy
       wager = self.make_wager
       re = /<("[^"]*"|'[^']*'|[^'">])*>/
       final_selections = Question.all.select {|q| q.category == @@final_clue.category}.map {|q| q.answer}.each {|a| a.gsub!(re, '')}
-    #   binding.pry
       
       puts "\n" * 35 
       puts "Your wager: #{wager}"
@@ -500,7 +493,6 @@ class Jeopardy
       @think_song = Music.new('Jeopardy-theme-song.mp3')
       @think_song.play
       final_answer = PROMPT.select("What is:", final_selections)
-    #   binding.pry
       if final_answer == @@final_clue.answer
         puts "\n" * 3
         print "Trebek:".light_green
@@ -508,9 +500,7 @@ class Jeopardy
         sleep(2)
         puts "Your wager: #{wager}"
         sleep(2)
-        # binding.pry
         @@score += wager
-        # binding.pry
       else
         puts "\n" * 3
         print "Trebek:".light_green
@@ -518,14 +508,11 @@ class Jeopardy
         sleep(2)
         puts "Your wager: #{wager}"
         sleep(2)
-        # binding.pry
         @@score -= wager
       end
-        # binding.pry
       puts "Your score for this game is #{@@score}"
       sleep(3)
       self.check_score
-    #   binding.pry
       self.player_stats
       self.main_menu
     end

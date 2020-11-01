@@ -11,7 +11,6 @@ class UserQuestion < ActiveRecord::Base
             sleep(3)
             Jeopardy.main_menu
         end
-        # binding.pry
         selection = PROMPT.select("These are the categories you need to study.  Please make a selection or scroll down to exit to the main menu.\n", categories, %w(Exit_To_Main))
         puts "\n" * 35
         if selection == "Exit_To_Main"
